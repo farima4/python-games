@@ -17,8 +17,6 @@ colors = ['DVD\\files\\blue.png', 'DVD\\files\\cyan.png',
           'DVD\\files\\pink.png', 'DVD\\files\\purple.png',
           'DVD\\files\\red.png', 'DVD\\files\\yellow.png']
 
-
-
 class DVD(sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -71,8 +69,6 @@ dvdg.add(logo)
 
 bg = Surface((width, height))
 bg.fill('black')
-     
- 
      
        
 while True:
