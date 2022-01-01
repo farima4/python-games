@@ -165,6 +165,7 @@ while True:
             for i in asteroids:
                 ASgroup.remove(i)
                 i.kill()
+            mouse.set_visible(True)
             while True:
                 for e in event.get():
                     if e.type == QUIT:
