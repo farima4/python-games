@@ -68,10 +68,6 @@ class Bird(sprite.Sprite):
             self.y -= 5
             counter -= 0.01
             
-        
-            
-
-
         gravity += 0.5
         self.y += gravity
         
