@@ -152,9 +152,7 @@ while True:
                   int(bird.rect.topleft[1]-p.rect.topleft[1]))
         bird.mask = mask.from_surface(bird.image)
         if p.mask.overlap(bird.mask, offset) or bird.rect.top > height or bird.rect.bottom < 0:
-            p.score = False
-            p.x  = -300
-            p.rect.center = (p.x, p.y)
+            pipes_group.remove(p)
             p.kill()
             go, gravity = 0, -1
             
@@ -183,7 +181,7 @@ while True:
                     timer = 0
                 clock.tick(30)
                     
-    pipes.draw(screen)    
+    pipes.draw(screen)
        
     display.update()
     
