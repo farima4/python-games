@@ -2,7 +2,7 @@
 from time import *
 from random import randint
 from sys import exit
-
+from space_path import path
 from pygame import *
 from pygame.sprite import spritecollide
 
@@ -25,7 +25,7 @@ class Player(sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = image.load(
-            'space\\spaceFiles\\spaceShip.png').convert_alpha()
+            path + 'spaceShip.png').convert_alpha()
         self.rect = self.image.get_rect(center=(300, 650))
         self.mask = mask.from_surface(self.image)
         self.x = self.rect.center[0]
@@ -62,7 +62,7 @@ class Asteroid(sprite.Sprite):
     def __init__(self, x1):
         super().__init__()
         self.image = image.load(
-            'space\\spaceFiles\\asteroid.png').convert_alpha()
+            path + 'asteroid.png').convert_alpha()
         self.rect = self.image.get_rect(center=(x1, 5))
         self.mask = mask.from_surface(self.image)
         self.x = self.rect.center[0]
@@ -114,7 +114,7 @@ asteroids = list()
 asteroids.append(asteroid)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SURFACES
 scoreSurface = score.render('score', True, 'white')
-spaceSurface = image.load('space\\spaceFiles\\background.png').convert_alpha()
+spaceSurface = image.load(path + 'background.png').convert_alpha()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MAIN LOOP
 display.set_caption('space man jaximus')
 while True:

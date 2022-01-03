@@ -1,6 +1,7 @@
 from pygame import *
 from random import *
 from sys import exit
+from dvd_path import path
 
 init()
 
@@ -11,11 +12,11 @@ display.set_caption('DVD screensaver :)')
 
 clock = time.Clock()
 
-colors = ['DVD\\files\\blue.png', 'DVD\\files\\cyan.png',
-          'DVD\\files\\darkblue.png', 'DVD\\files\\green.png',
-          'DVD\\files\\lime.png', 'DVD\\files\\orange.png',
-          'DVD\\files\\pink.png', 'DVD\\files\\purple.png',
-          'DVD\\files\\red.png', 'DVD\\files\\yellow.png']
+colors = [path + 'blue.png', path + 'cyan.png',
+          path + 'darkblue.png', path + 'green.png',
+          path + 'lime.png', path + 'orange.png',
+          path + 'pink.png', path + 'purple.png',
+          path + 'red.png', path + 'yellow.png']
 
 class DVD(sprite.Sprite):
     def __init__(self):

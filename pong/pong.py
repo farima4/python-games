@@ -1,6 +1,7 @@
 from pygame import *
 from sys import exit
 from random import randint, choice
+from pong_path import path
 
 from pygame.sprite import RenderUpdates
 init()
@@ -84,8 +85,8 @@ class Player(sprite.Sprite):
         self.y = self.rect.center[1]
 
 
-blue = Player(K_w, K_s, 40, 300, 'pong\\files\\blue.png')
-red = Player(K_UP, K_DOWN, 1060, 300, 'pong\\files\\red.png')
+blue = Player(K_w, K_s, 40, 300, path + 'blue.png')
+red = Player(K_UP, K_DOWN, 1060, 300, path + 'red.png')
 
 plyers = sprite.Group()
 plyers.add(blue)
@@ -96,7 +97,7 @@ class Ball(sprite.Sprite):
     def __init__(self, side, ver, Hspeed, Vspeed):
         super().__init__()
         self.image = image.load(
-            'pong\\files\\ball.png').convert_alpha()
+            path + 'ball.png').convert_alpha()
         self.rect = self.image.get_rect(center=(width / 2, height / 2))
         self.side = side
         self.ver = ver
@@ -118,7 +119,7 @@ class Ball(sprite.Sprite):
             self.y += self.Vspeed
         # ~~~~~~~~~~~~~~~~~~~~ RESTRICTIONS
         if self.rect.left > width + 200:
-            self.image = image.load('pong\\files\\ball.png')
+            self.image = image.load(path + 'ball.png')
             self.side = choice(('left', 'right'))
             self.ver = choice(('up', 'down'))
             self.Hspeed = randint(3, 10)
@@ -128,7 +129,7 @@ class Ball(sprite.Sprite):
             blueScore()
 
         if self.rect.right < -200:
-            self.image = image.load('pong\\files\\ball.png')
+            self.image = image.load(path + 'ball.png')
             self.side = choice(('left', 'right'))
             self.ver = choice(('up', 'down'))
             self.Hspeed = randint(2, 6)
@@ -147,13 +148,13 @@ class Ball(sprite.Sprite):
             self.side = 'right'
             self.Hspeed = randint(8, 12)
             self.Vspeed = randint(4, 12)
-            self.image = image.load('pong\\files\\blueball.png')
+            self.image = image.load(path + 'blueball.png')
 
         if self.rect.colliderect(red.rect):
             self.side = 'left'
             self.Hspeed = randint(8, 12)
             self.Vspeed = randint(4, 12)
-            self.image = image.load('pong\\files\\redball.png')
+            self.image = image.load(path + 'redball.png')
 
         self.rect.center = (self.x, self.y)
 

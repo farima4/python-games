@@ -1,11 +1,11 @@
 from pygame import *
 from random import *
 from sys import exit
+from flappy_birds_path import path
 
 width, height = 480, 720
 range = 100, 640
 h = randrange(100, 720)
-path = 'flappy_birds\\files\\'
 animation = [path + 'bird1.png', path + 'bird2.png', path + 'bird3.png']
 
 init()
@@ -14,7 +14,7 @@ display.set_caption('flappy birds')
 clock = time.Clock()
 
 x = 0
-bg = image.load('flappy_birds\\files\\background.png').convert_alpha()
+bg = image.load(path + 'background.png').convert_alpha()
 bg_rect = bg.get_rect(center = (x, height / 2))
 # ~~~~~~~~
 end = font.Font(None, 100) 
