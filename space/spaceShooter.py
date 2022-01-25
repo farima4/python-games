@@ -2,9 +2,9 @@
 from time import *
 from random import randint
 from sys import exit
-from space_path import path
+from space_path import path, audio_path
 from pygame import *
-from pygame.sprite import spritecollide
+from pygame import mixer
 
 # ~~~~~~~~~~~~~~ PYGAME INIT
 init()
@@ -18,6 +18,12 @@ clock = time.Clock()
 score = font.Font(None, 40)
 Hp = font.Font(None, 40)
 
+# ~~~~~~~~~~~~~~~~~~~~ AUDIO    
+mixer.music.load(audio_path + 'background.mp3')
+mixer.music.play(-1)
+shoot_audio = mixer.Sound(audio_path + 'shoot.wav')
+explosion_audio = mixer.Sound(audio_path + 'explosion.wav')
+damage_audio = mixer.Sound(audio_path + 'damage.wav')
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PLAYER
 
 
@@ -48,6 +54,8 @@ class Player(sprite.Sprite):
         self.rect.center = (self.x, self.y)
 
     def shoot(self):
+        
+        shoot_audio.play()
         return Bullet(self.x, self.y)
 
 
@@ -113,6 +121,7 @@ playerHP = 5
 asteroids = list()
 asteroids.append(asteroid)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SURFACES
+
 scoreSurface = score.render('score', True, 'white')
 spaceSurface = image.load(path + 'background.png').convert_alpha()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MAIN LOOP
@@ -136,8 +145,9 @@ while True:
     # ~~~~~~~~~~~~~~ COLLISIONS
     #offset2 = (int(), int())
     for i in asteroids:
-        kills = spritecollide(i, BUgroup, True)
+        kills = sprite.spritecollide(i, BUgroup, True)
         for b in kills:
+            explosion_audio.play()
             asteroidHP -= 1
             scoreNUM += 1
         if asteroidHP < 1:
@@ -151,6 +161,7 @@ while True:
         offset = (int(ship.rect.topleft[0]-i.rect.topleft[0]),
                   int(ship.rect.topleft[1]-i.rect.topleft[1]))
         if asteroid.mask.overlap(ship.mask, offset) and asteroidHP > 0:
+            damage_audio.play()
             if len(asteroids) == 1:
                 randAsteroid = i.spawn()
                 asteroids.remove(i)
@@ -171,13 +182,14 @@ while True:
                     if e.type == QUIT:
                         exit()
                 screen.fill("black")
-                display.set_mode((500, 400))
                 score = font.Font(None, 100)
                 screen.blit(spaceSurface, (0, 0))
                 scoreSurface = score.render(f'SCORE:{scoreNUM*10}', True, 'white')
-                screen.blit(scoreSurface, (90, 170))
+                scoreRect.center = (SW / 2 - 100, SH / 2)
+                screen.blit(scoreSurface, scoreRect.topleft)
                 display.update()
                 clock.tick(20)
+                
 
     scoreSurface = score.render(f'SCORE:{scoreNUM*10}', True, 'white')
     screen.blit(scoreSurface, (10, 720))

@@ -1,7 +1,9 @@
+import imp
 from pygame import *
 from random import *
+from pygame import mixer
 from sys import exit
-from flappy_birds_path import path
+from flappy_birds_path import path, audio_path
 
 width, height = 480, 720
 range = 100, 640
@@ -14,6 +16,8 @@ display.set_caption('flappy birds')
 clock = time.Clock()
 
 x = 0
+mixer.music.load(audio_path + 'background.mp3')
+mixer.music.play(-1)
 bg = image.load(path + 'background.png').convert_alpha()
 bg_rect = bg.get_rect(center = (x, height / 2))
 # ~~~~~~~~
@@ -45,6 +49,7 @@ counter = 0
 gravity = 3
 
 class Bird(sprite.Sprite):
+    
     def __init__(self):
         super().__init__()
         self.image = image.load(animation[1]).convert_alpha()
@@ -61,6 +66,8 @@ class Bird(sprite.Sprite):
             if e.type == QUIT:
                 exit()
             if e.type == MOUSEBUTTONDOWN:
+                jump_sound = mixer.Sound(audio_path + 'jump.wav')
+                jump_sound.play()
                 counter = 0.1
                 
         if counter > 0:
@@ -104,6 +111,8 @@ class Pipe(sprite.Sprite):
             self.kill()
             
         if self.x < bird.rect.center[0] and self.score:
+            score_audio = mixer.Sound(audio_path + 'score.wav')
+            score_audio.play()
             self.score = False
             num += 1
             scoreSurf = score.render(f'score: {num}', True, 'white')
@@ -121,7 +130,6 @@ def new_pipe():
     return Pipe()
 
 while True:
-    
 
     background()
     
@@ -137,17 +145,16 @@ while True:
         
     pipeC -= 0.05
     
-    
-    
     for p in pipes_group:
         p.move()
         
-        
-
         offset = (int(bird.rect.topleft[0]-p.rect.topleft[0]),
                   int(bird.rect.topleft[1]-p.rect.topleft[1]))
+        
         bird.mask = mask.from_surface(bird.image)
         if p.mask.overlap(bird.mask, offset) or bird.rect.top > height or bird.rect.bottom < 0:
+            hit_sound = mixer.Sound(audio_path + 'hit.wav')
+            hit_sound.play()
             pipes_group.remove(p)
             p.kill()
             go, gravity = 0, -1
@@ -175,7 +182,9 @@ while True:
                 if timer == 1:
                     display.update()
                     timer = 0
+                
                 clock.tick(30)
+            
                     
     pipes.draw(screen)
        

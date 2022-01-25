@@ -1,1 +1,5 @@
-path = 'pong\\pong_files\\'
+from email.mime import audio
+
+
+path = 'pong\\pong_files\\sprites\\'
+audio_path = 'pong\\pong_files\\audio\\'

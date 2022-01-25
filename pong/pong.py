@@ -1,7 +1,7 @@
 from pygame import *
 from sys import exit
 from random import randint, choice
-from pong_path import path
+from pong_path import path, audio_path
 
 from pygame.sprite import RenderUpdates
 init()
@@ -21,6 +21,14 @@ scoreRsurf = scoreR.render(str('0'), True, 'Red')
 line = Surface((30, 10))
 line.fill('purple')
 
+# ~~~~~~~~~~~~~~~~~~~~ AUDIO
+mixer.music.load(audio_path + 'background.mp3')
+mixer.music.play(-1)
+hit_audio = mixer.Sound(audio_path + 'hit.wav')
+score_audio = mixer.Sound(audio_path + 'score.wav')
+
+def hit():
+    hit_audio.play()
 
 def blueScore():
     global score1
@@ -119,6 +127,7 @@ class Ball(sprite.Sprite):
             self.y += self.Vspeed
         # ~~~~~~~~~~~~~~~~~~~~ RESTRICTIONS
         if self.rect.left > width + 200:
+            score_audio.play()
             self.image = image.load(path + 'ball.png')
             self.side = choice(('left', 'right'))
             self.ver = choice(('up', 'down'))
@@ -129,6 +138,7 @@ class Ball(sprite.Sprite):
             blueScore()
 
         if self.rect.right < -200:
+            score_audio.play()
             self.image = image.load(path + 'ball.png')
             self.side = choice(('left', 'right'))
             self.ver = choice(('up', 'down'))
@@ -140,17 +150,21 @@ class Ball(sprite.Sprite):
 
         # ~~~~~~~~~~~~~~~~~~~~~~~ COLLISION
         if self.rect.colliderect(wall1_rect):
+            hit()
             self.ver = 'down'
         if self.rect.colliderect(wall2_rect):
+            hit()
             self.ver = 'up'
 
         if self.rect.colliderect(blue.rect):
+            hit()
             self.side = 'right'
             self.Hspeed = randint(8, 12)
             self.Vspeed = randint(4, 12)
             self.image = image.load(path + 'blueball.png')
 
         if self.rect.colliderect(red.rect):
+            hit()
             self.side = 'left'
             self.Hspeed = randint(8, 12)
             self.Vspeed = randint(4, 12)

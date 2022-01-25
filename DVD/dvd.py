@@ -1,7 +1,8 @@
 from pygame import *
 from random import *
+from pygame import mixer
 from sys import exit
-from dvd_path import path
+from dvd_path import path, audio_path
 
 init()
 
@@ -18,6 +19,10 @@ colors = [path + 'blue.png', path + 'cyan.png',
           path + 'pink.png', path + 'purple.png',
           path + 'red.png', path + 'yellow.png']
 
+hit_audio = mixer.Sound(audio_path + 'hit.wav')
+def hit():
+    hit_audio.play()
+    
 class DVD(sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -43,25 +48,21 @@ class DVD(sprite.Sprite):
         # ~~~~~~~~~~ RESTRICTIONS
         
         if self.rect.top < 0:
-            old = self.image
-            while self.image == old:
-                self.image = image.load(choice(colors))
+            hit()
+            self.image = image.load(choice(colors))
             self.ver = 'down'
         if self.rect.bottom > height:
-            old = self.image
-            while self.image == old:
-                self.image = image.load(choice(colors))
+            hit()
+            self.image = image.load(choice(colors))
             self.ver = 'up'
             
         if self.rect.left < 0:
-            old = self.image
-            while self.image == old:
-                self.image = image.load(choice(colors))
+            hit()
+            self.image = image.load(choice(colors))
             self.hor = 'right'
         if self.rect.right > width:
-            old = self.image
-            while self.image == old:
-                self.image = image.load(choice(colors))
+            hit()
+            self.image = image.load(choice(colors))
             self.hor = 'left'
         
 logo = DVD()    
